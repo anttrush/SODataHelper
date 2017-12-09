@@ -1,0 +1,24 @@
+import pymysql
+
+db = pymysql.connect("192.168.7.129","jisk","jisk","stackoverflow")
+cursor = db.cursor()
+cursor.execute("SELECT VERSION()")
+data = cursor.fetchone()
+print("Database version : %s " % data)
+
+
+for y in range(2009,2017):
+    yy = str(y)
+    for m in range(1,13):
+        mm = m < 10 and ("0"+str(m)) or str(m)
+        time = yy+'-'+mm+'-01T00:00:00.000'
+        sql = "SELECT Id FROM stackoverflow.questions where CreationDate > \"" + time + "\" Limit 1;"
+        try:
+            cursor.execute(sql)
+            db.commit()
+            results = cursor.fetchall()
+            print(results[0][0])
+        except:
+            db.rollback()
+            print("fail")
+db.close()
