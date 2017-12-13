@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -30,16 +31,18 @@ public class SOjsk_QA {
 
             // 1.实例化SAXParserFactory对象
             SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, false);
             // 2.创建解析器
             SAXParser parser = factory.newSAXParser();
             // 3.获取需要解析的文档，生成解析器,最后解析文档
-            File f = new File("/home/jsk/Stack Overflow Data/Posts.xml");
+            //File f = new File("/home/jsk/Stack Overflow Data/Posts");
+            File f = new File("/home/jsk/SOdata/Posts.xml");
             SaxHandler_QA dh = new SaxHandler_QA();
             dh.initalMysql(con);
         
             parser.parse(f, dh);
         
-            con.close();
+            dh.closeMysql();
         } catch(ClassNotFoundException e) {   
             //数据库驱动类异常处理
             System.out.println("Sorry,can`t find the Driver!");   
