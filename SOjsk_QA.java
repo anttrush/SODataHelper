@@ -35,7 +35,7 @@ public class SOjsk_QA {
             // 2.创建解析器
             SAXParser parser = factory.newSAXParser();
             // 3.获取需要解析的文档，生成解析器,最后解析文档
-            //File f = new File("/home/jsk/Stack Overflow Data/Posts");
+            //File f = new File("D:\\Posts.txt");
             File f = new File("/home/jsk/SOdata/Posts.xml");
             SaxHandler_QA dh = new SaxHandler_QA();
             dh.initalMysql(con);
