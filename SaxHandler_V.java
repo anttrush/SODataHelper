@@ -3,7 +3,8 @@ import org.xml.sax.*;
 import java.sql.*;
 
 public class SaxHandler extends DefaultHandler {
-	private Connection con;
+private Connection con;
+private PreparedStatement psql;
 	
 	public void initalMysql(Connection cc){
 		this.con = cc;
@@ -55,9 +56,8 @@ public class SaxHandler extends DefaultHandler {
 			Attributes arg3) throws SAXException {
 		// TODO Auto-generated method stub
 		        //遍历查询结果集
-		if (arg2 == "row"){
+		if (arg2 == "row" && Integer.parseInt(arg3.getValue("Id")) > 248793){
 			try {
-				PreparedStatement psql;
 				//预处理添加数据，其中有两个参数--“？”
 				psql = con.prepareStatement("insert into votes (Id,PostId,VoteTypeId,CreationDate) "
 						+ "values(?,?,?,?)");
@@ -65,7 +65,7 @@ public class SaxHandler extends DefaultHandler {
 					psql.setInt(i+1, Integer.parseInt(arg3.getValue(i)));              //设置参数i(从1开始)
 				}
 				psql.setString(4, arg3.getValue(3));
-				System.out.println(psql.executeUpdate());           //执行更新
+				System.out.println("votes\t"+arg3.getValue("Id") + "\t"+psql.executeUpdate());           //执行更新
 			} catch(SQLException e) {
 				//数据库异常处理
 				e.printStackTrace();  
